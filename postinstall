@@ -1,0 +1,46 @@
+#!/bin/sh
+
+init() {
+    if ! command -v "git" &> /dev/null; then
+        echo "install git and rerun the script"
+        exit 1
+    fi
+    git clone https://aur.archlinux.org/yay.git $HOME/yay
+    sudo sed -i "s/-j2/-j$(nproc)/;/^#MAKEFLAGS/s/^#//" /etc/makepkg.conf
+    (cd $HOME/yay && makepkg -si)
+    rm -rf $HOME/yay
+}
+
+pkg() {
+    packages=()
+    while IFS= read -r line; do
+        package=$(echo "$line" | awk '{print $1}')
+        packages+=("$package")
+    done < $HOME/postinstall/packages
+    
+    yay -Syu --noconfirm "${packages[@]}"
+}
+
+dotfiles() {
+    git clone --bare https://github.com/xaizone/dotfiles.git $HOME/.dotfiles
+    mkdir -p $HOME/.local/bin $HOME/.local/share
+    function dots {
+        /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
+    }
+    dots checkout -f
+    dots config status.showUntrackedFiles no
+    
+    mkdir -p $HOME/audio $HOME/document $HOME/image $HOME/temp $HOME/video
+    xdg-user-dirs-update
+    
+    sudo bash -c '
+        sudo sed -Ei "s/^#(ParallelDownloads).*/\1 = 5/;/^#Color$/s/#//" /etc/pacman.conf
+    '
+}
+
+init
+pkg
+dotfiles
+echo "finished, rebooting in 5 seconds"
+sleep 5
+reboot
