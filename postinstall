@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# credits:
+# - misopog (https://github.com/misopog/postinstall)
+
 init() {
     if ! command -v "git" &> /dev/null; then
         echo "install git and rerun the script"
