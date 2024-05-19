@@ -1,7 +1,6 @@
 alacritty
-bitwarden
-discord
 dunst
+ffmpeg
 firefox
 gamemode
 github-cli
@@ -39,6 +38,7 @@ terminus-font
 ttf-liberation
 ttf-twemoji
 unclutter
+vesktop-bin
 vulkan-radeon
 wine
 wireplumber
