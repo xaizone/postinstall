@@ -26,14 +26,17 @@ mpv
 neovim
 nfs-utils
 nnn
+noto-fonts
 noto-fonts-cjk
 nsxiv
 nvtop
 obs-studio
 obs-vkcapture
 openssh
+pipewire
 pulsemixer
 steam
+terminus-font
 ttf-liberation
 ttf-twemoji
 unclutter
@@ -43,7 +46,7 @@ wireplumber
 xclip
 xdg-user-dirs
 xdg-utils
-xf86-input-evdev
+xf86-input-libinput
 xf86-video-amdgpu
 xf86-video-ati
 xorg-server
