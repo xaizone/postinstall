@@ -36,14 +36,35 @@ dotfiles() {
     mkdir -p $HOME/audio $HOME/document $HOME/image $HOME/temp $HOME/video
     xdg-user-dirs-update
     
-    sudo bash -c '
-        sudo sed -Ei "s/^#(ParallelDownloads).*/\1 = 5/;/^#Color$/s/#//" /etc/pacman.conf
-    '
+    sudo sed -Ei "s/^#(ParallelDownloads).*/\1 = 5/;/^#Color$/s/#//" /etc/pacman.conf
+}
+
+audio() {
+    sudo cp $HOME/postinstall/audio/audient-evo4.conf /usr/share/alsa-card-profile/mixer/profile-sets/
+    systemctl --user enable pipewire.socket
+    systemctl --user enable pipewire-pulse.socket
+    systemctl --user enable wireplumber.service
+}
+
+x11() {
+    sudo cp $HOME/postinstall/x11/* /etc/X11/xorg.conf.d/
+}
+
+end() {
+    echo "postinstall script finished, type 'y' for reboot, 'n' to cancel"
+
+    read -r response
+
+    if [[ $response == "y" ]]; then
+        reboot
+    elif [[ $response == "n" ]]; then
+        echo "reboot cancelled"
+    fi
 }
 
 init
 pkg
 dotfiles
-echo "finished, rebooting in 5 seconds"
-sleep 5
-reboot
+audio
+x11
+end
