@@ -39,6 +39,12 @@ dotfiles() {
     sudo sed -Ei "s/^#(ParallelDownloads).*/\1 = 5/;/^#Color$/s/#//" /etc/pacman.conf
 }
 
+suckless() {
+    git clone https://github.com/xaizone/dmenu.git $HOME/dmenu
+    (cd $HOME/dmenu && sudo make clean install)
+    rm -rf $HOME/dmenu
+}
+
 audio() {
     sudo cp $HOME/postinstall/audio/audient-evo4.conf /usr/share/alsa-card-profile/mixer/profile-sets/
     systemctl --user enable pipewire.socket
@@ -65,6 +71,7 @@ end() {
 init
 pkg
 dotfiles
+suckless
 audio
 x11
 end
