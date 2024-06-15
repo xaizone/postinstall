@@ -40,9 +40,11 @@ dotfiles() {
 }
 
 suckless() {
-    git clone https://github.com/xaizone/dmenu.git $HOME/dmenu
-    (cd $HOME/dmenu && sudo make clean install)
-    rm -rf $HOME/dmenu
+    git clone https://github.com/xaizone/dmenu.git $HOME/document/dmenu
+    (cd $HOME/document/dmenu && sudo make clean install)
+
+    git clone https://github.com/xaizone/dwm.git $HOME/document/dwm
+    (cd $HOME/document/dwm && sudo make clean install)
 }
 
 audio() {
