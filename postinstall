@@ -45,6 +45,9 @@ suckless() {
 
     git clone https://github.com/xaizone/dwm.git $HOME/document/dwm
     (cd $HOME/document/dwm && sudo make clean install)
+
+    git clone https://github.com/xaizone/slock.git $HOME/document/slock
+    (cd $HOME/document/slock && sudo make clean install)
 }
 
 audio() {
