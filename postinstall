@@ -17,8 +17,7 @@ init() {
 pkg() {
     packages=()
     while IFS= read -r line; do
-        package=$(echo "$line" | awk '{print $1}')
-        packages+=("$package")
+        packages+=("$line")
     done < $HOME/postinstall/packages
     
     yay -Syu --noconfirm "${packages[@]}"
@@ -40,14 +39,11 @@ dotfiles() {
 }
 
 suckless() {
-    git clone https://github.com/xaizone/dmenu.git $HOME/document/dmenu
-    (cd $HOME/document/dmenu && sudo make clean install)
-
-    git clone https://github.com/xaizone/dwm.git $HOME/document/dwm
-    (cd $HOME/document/dwm && sudo make clean install)
-
-    git clone https://github.com/xaizone/slock.git $HOME/document/slock
-    (cd $HOME/document/slock && sudo make clean install)
+    for p in dmenu dwm slock;
+    do
+        git clone https://github.com/xaizone/${p}.git $HOME/document/${p}
+        (cd $HOME/document/${p} && sudo make clean install)
+    done
 }
 
 audio() {
@@ -66,11 +62,18 @@ end() {
 
     read -r response
 
-    if [[ $response == "y" ]]; then
-        reboot
-    elif [[ $response == "n" ]]; then
-        echo "reboot cancelled"
-    fi
+    case $response in
+        y) reboot ;;
+        n)
+            echo "reboot cancelled"
+            exit 0
+            ;;
+        *)
+            echo "incorrect option selected"
+            end
+            ;;
+    esac
+
 }
 
 init
