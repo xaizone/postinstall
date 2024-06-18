@@ -35,7 +35,7 @@ dotfiles() {
     mkdir -p $HOME/audio $HOME/document $HOME/image $HOME/temp $HOME/video
     xdg-user-dirs-update
     
-    sudo sed -Ei "s/^#(ParallelDownloads).*/\1 = 5/;/^#Color$/s/#//" /etc/pacman.conf
+    sudo sed -Ei "s/^#(ParallelDownloads).*/\1 = 5/;/^#Color$/s/#//;/^#VerbosePkgLists$/s/#//" /etc/pacman.conf
 }
 
 suckless() {
@@ -44,6 +44,13 @@ suckless() {
         git clone https://github.com/xaizone/${p}.git $HOME/document/${p}
         (cd $HOME/document/${p} && sudo make clean install)
     done
+}
+
+network() {
+    sudo sh -c "echo -e '[connectivity]\nenabled=false' > /etc/NetworkManager/conf.d/20-connectivity.conf"
+    if ! grep -q "localhost" /etc/hosts; then
+        sudo sh -c "echo -e '127.0.0.1 localhost\n::1 localhost' >> /etc/hosts"
+    fi
 }
 
 audio() {
@@ -81,5 +88,6 @@ pkg
 dotfiles
 suckless
 audio
+network
 x11
 end
