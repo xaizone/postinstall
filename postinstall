@@ -24,7 +24,7 @@ pkg() {
 }
 
 dotfiles() {
-    git clone --bare https://github.com/xaizone/dotfiles.git $HOME/.dotfiles
+    git clone --bare https://git.xaizone.eu/xaizone/dotfiles.git $HOME/.dotfiles
     mkdir -p $HOME/.local/bin $HOME/.local/share
     function dots {
         /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
@@ -41,7 +41,7 @@ dotfiles() {
 suckless() {
     for p in dmenu dwm slock;
     do
-        git clone https://github.com/xaizone/${p}.git $HOME/document/${p}
+        git clone https://git.xaizone.eu/xaizone/${p}.git $HOME/document/${p}
         (cd $HOME/document/${p} && sudo make clean install)
     done
 }
